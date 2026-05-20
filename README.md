@@ -1,1 +1,45 @@
-Weather Derivatives Pricing Engine 🌦️Author: Samuele CaneschiAcademic Context: MSc in Finance & Energy Markets — University of Bologna (UniBo)📖 OverviewThis repository contains an end-to-end quantitative pricing engine for weather derivatives, specifically Heating Degree Days (HDD) options. Bridging the gap between advanced stochastic calculus and computational finance, the project models daily temperatures using a state-space representation and prices a winter HDD Call option via Monte Carlo simulation under the risk-neutral measure.The model is calibrated using historical temperature data from Florence, Italy.🚀 Key Features & MethodologyDeterministic Seasonal Trend: Models the baseline daily temperature using a trigonometric function that captures mean temperature, linear climate change trends, and seasonal breadth.Stochastic Engine (CARMA / Ornstein-Uhlenbeck): Implements a Continuous-time Auto-Regressive Moving Average CARMA(2,1) process to model the unpredictable weather fluctuations (noise) with mean-reverting mechanics.Measure Change via Girsanov's Theorem: Transitions the model from the historical real-world measure ($\mathbb{P}$) to the risk-neutral pricing measure ($\mathbb{Q}$) by adjusting the drift matrix using a market price of risk vector ($\theta$).Monte Carlo Pricing Simulation: Generates 10,000 temperature paths for a 150-day winter contract to simulate the distribution of accumulated HDDs.CME Standard Convention: Prices the HDD Call Option using the standard Chicago Mercantile Exchange (CME) convention of €1,000 per tick/index point, outputting the fair forward price, discounted option premium, and 95% confidence intervals.🧮 Mathematical FrameworkThe project is built on the following quantitative models:1. Temperature DynamicsThe final temperature is the sum of a deterministic trend and a stochastic fluctuation:$$T(t) = \Lambda(t) + Y(t)$$Where the seasonal trend is defined as:$$\Lambda(t) = a_0 + a_1 t + a_2 \cos\left(\frac{2\pi t}{365}\right) + a_3 \sin\left(\frac{2\pi t}{365}\right)$$2. State-Space CARMA(p,q) ProcessThe fluctuations $Y(t)$ are modeled via an observation vector $b$ and a state vector $X(t)$ driven by a multidimensional SDE:$$dX(t) = A \cdot X(t) dt + e_p \cdot \sigma dW(t)$$3. Risk-Neutral Pricing (Option Premium)The fair value of the HDD Call option is computed by discounting the expected payoff under the measure $\mathbb{Q}$:$$V_0 = e^{-rT} \cdot \mathbb{E}^\mathbb{Q} \left[ \text{tick} \cdot \max\left( \sum_{t=1}^{T} \text{HDD}_t - K, 0 \right) \right]$$📊 Visualizations & OutputsThe script automatically generates a comprehensive visualization dashboard:Spaghetti Plot: Displays a sub-sample of simulated temperature paths against the standard 18°C HDD threshold, along with the mean trajectory under $\mathbb{Q}$.Payoff Distribution: A histogram showing the accumulated HDD distribution across all 10,000 scenarios, highlighting the Expected Forward Price and the 95th Percentile Value-at-Risk (Extreme Cold scenario).🛠️ Technologies UsedLanguage: PythonLibraries: NumPy (Vectorized stochastic simulations, Linear Algebra), Pandas (Data structuring), Matplotlib (Financial data visualization)
+# Weather Derivatives Pricing Engine 🌦️
+
+**Author:** Samuele Caneschi  
+**Academic Context:** MSc in Finance & Energy Markets — University of Bologna (UniBo)  
+
+## 📖 Overview
+This repository contains an end-to-end quantitative pricing engine for weather derivatives, specifically Heating Degree Days (HDD) options. Bridging the gap between advanced stochastic calculus and computational finance, the project models daily temperatures using a state-space representation and prices a winter HDD Call option via Monte Carlo simulation under the risk-neutral measure. 
+
+The model is calibrated using historical temperature data from Florence, Italy.
+
+---
+
+## 🚀 Key Features & Methodology
+
+* **Deterministic Seasonal Trend:** Models the baseline daily temperature using a trigonometric function that captures mean temperature, linear climate change trends, and seasonal breadth.
+* **Stochastic Engine (CARMA / Ornstein-Uhlenbeck):** Implements a Continuous-time Auto-Regressive Moving Average `CARMA(2,1)` process to model the unpredictable weather fluctuations (noise) with mean-reverting mechanics.
+* **Measure Change via Girsanov's Theorem:** Transitions the model from the historical real-world measure ($\mathbb{P}$) to the risk-neutral pricing measure ($\mathbb{Q}$) by adjusting the drift matrix using a market price of risk vector ($\theta$).
+* **Monte Carlo Pricing Simulation:** Generates 10,000 temperature paths for a 150-day winter contract to simulate the distribution of accumulated HDDs.
+* **CME Standard Convention:** Prices the HDD Call Option using the standard Chicago Mercantile Exchange (CME) convention of **€1,000** per tick/index point, outputting the fair forward price, discounted option premium, and 95% confidence intervals.
+
+---
+
+## 🧮 Mathematical Framework
+
+The project is built on the following quantitative models:
+
+**1. Temperature Dynamics**
+The final temperature is the sum of a deterministic trend and a stochastic fluctuation:
+$$T(t) = \Lambda(t) + Y(t)$$
+Where the seasonal trend is defined as:
+$$\Lambda(t) = a_0 + a_1 t + a_2 \cos\left(\frac{2\pi t}{365}\right) + a_3 \sin\left(\frac{2\pi t}{365}\right)$$
+
+**2. State-Space CARMA(p,q) Process**
+The fluctuations $Y(t)$ are modeled via an observation vector $b$ and a state vector $X(t)$ driven by a multidimensional SDE:
+$$dX(t) = A \cdot X(t) dt + e_p \cdot \sigma dW(t)$$
+
+**3. Risk-Neutral Pricing (Option Premium)**
+The fair value of the HDD Call option is computed by discounting the expected payoff under the measure $\mathbb{Q}$:
+$$V_0 = e^{-rT} \cdot \mathbb{E}^\mathbb{Q} \left[ \text{tick} \cdot \max\left( \sum_{t=1}^{T} \text{HDD}_t - K, 0 \right) \right]$$
+
+---
+
+## 📊 Visualizations & Outputs
+
+The script automatically generates a comprehensive
