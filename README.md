@@ -39,7 +39,3 @@ The fair value of the HDD Call option is computed by discounting the expected pa
 $$V_0 = e^{-rT} \cdot \mathbb{E}^\mathbb{Q} \left[ \text{tick} \cdot \max\left( \sum_{t=1}^{T} \text{HDD}_t - K, 0 \right) \right]$$
 
 ---
-
-## 📊 Visualizations & Outputs
-
-The script automatically generates a comprehensive
